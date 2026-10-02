@@ -68,9 +68,13 @@ jobs:
         working-directory: pyfoot-space
         run: python tools/get_pyfoot.py --local
 
+      # Ohne den Versionstest: Hier zaehlt nur, ob Space mit diesem Stand
+      # laeuft. Dass Space die richtige Version festlegt, prueft Space selbst;
+      # zwischen einem neuen Tag und dem Umstellen von Space waere der Job
+      # sonst jedes Mal rot.
       - name: Tests von pyfoot-space (pytest)
         working-directory: pyfoot-space
-        run: python -m pytest -q
+        run: python -m pytest -q --deselect tests/test_pyfoot_kopie.py::test_kopie_hat_die_festgelegte_version
 
       - name: Typpruefung von pyfoot-space (mypy)
         working-directory: pyfoot-space
