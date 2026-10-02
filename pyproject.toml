@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyfoot"
-version = "0.1.0"
+version = "0.1.1"
 description = "Eine Lernumgebung fuer den Programmierunterricht, aufgebaut auf pygame"
 authors = [{ name = "Jörg Schaede" }]
 license = "MIT"

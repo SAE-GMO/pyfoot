@@ -98,7 +98,8 @@ def class_tree() -> list[ClassRow]:
             counter += 1
             number = counter if counter <= 9 else None
         rows.append(ClassRow(cls, depth, placeable, number))
-        for subclass in sorted(cls.__subclasses__(), key=lambda c: c.__name__):
+        subclasses: list[type] = sorted(cls.__subclasses__(), key=lambda c: c.__name__)
+        for subclass in subclasses:
             walk(subclass, depth + 1, actors)
 
     walk(_Actor, 0, True)

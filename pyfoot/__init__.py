@@ -54,7 +54,7 @@ from .input import (
 )
 from .world import World
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 # Beendet ein Fehler das Programm -- etwa beim Start, bevor ein Fenster offen
 # ist --, steht unter der gewohnten Ausgabe eine Zusammenfassung auf Deutsch
