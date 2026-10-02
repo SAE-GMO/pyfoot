@@ -1,0 +1,15 @@
+# Zwischenstaende von Python und den Pruefwerkzeugen
+__pycache__/
+*.py[co]
+.mypy_cache/
+.pytest_cache/
+.venv/
+
+# Beim Bauen eines Pakets
+/build/
+/dist/
+*.egg-info/
+
+# Liegengebliebenes
+*.bak
+*.tmp

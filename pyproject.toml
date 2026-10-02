@@ -1,0 +1,40 @@
+[build-system]
+# Ab 77 versteht setuptools die Lizenzangabe als SPDX-Ausdruck (PEP 639).
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyfoot"
+version = "0.1.0"
+description = "Eine Lernumgebung fuer den Programmierunterricht, aufgebaut auf pygame"
+authors = [{ name = "Jörg Schaede" }]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = ["pygame>=2.5"]
+
+[project.urls]
+Repository = "https://github.com/SAE-GMO/pyfoot"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "mypy>=1.8"]
+
+[tool.setuptools.packages.find]
+include = ["pyfoot*"]
+
+[tool.setuptools.package-data]
+pyfoot = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+# Der Typcheck ist bewusst nicht blockierend (Anforderungsdokument Abschnitt 5).
+# Das Ergebnis wird protokolliert, verhindert aber keine Ausfuehrung.
+warn_unused_ignores = false
+
+[[tool.mypy.overrides]]
+module = ["pygame.*"]
+ignore_missing_imports = true

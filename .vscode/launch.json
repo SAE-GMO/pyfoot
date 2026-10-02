@@ -1,0 +1,25 @@
+{
+  // Damit der Play-Knopf und F5 vorhersagbar arbeiten.
+  // "cwd" auf den Projektordner, damit relative Pfade stimmen.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Aktuelle Datei starten",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true
+    },
+    {
+      "name": "Beispiel: Minimalbeispiel",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/example_minimal.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true
+    }
+  ]
+}
