@@ -1,0 +1,8 @@
+# Binaerdateien: git wandelt hier nie Zeilenenden um. Ohne diese Angabe hielt
+# git die PDFs fuer Text und machte sie mit core.autocrlf=true (unter Windows
+# ueblich) beim Auschecken kaputt.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.zip binary
