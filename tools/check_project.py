@@ -5,10 +5,12 @@ Unterricht -- fuer die gibt es `check_code.py` mit milderen Einstellungen.
 Hier gilt die strenge Einstellung aus `pyproject.toml`.
 
 Die Pruefung ist nicht blockierend: Sie meldet das Ergebnis, der Rueckgabewert
-ist immer 0 (Anforderungsdokument Abschnitt 5).
+ist immer 0 (Anforderungsdokument Abschnitt 5). Ausnahme ist `--ci` fuer die
+automatische Pruefung auf GitHub: Dort soll ein Typfehler den Lauf rot faerben.
 
 Der Aufruf gelingt aus jedem Verzeichnis:
     python tools\\check_project.py
+    python tools\\check_project.py --ci
 """
 
 from __future__ import annotations
@@ -52,8 +54,14 @@ def run_mypy() -> tuple[int, str]:
     return result.returncode, (result.stdout + result.stderr).strip()
 
 
-def main() -> int:
-    """Prueft das Projekt und meldet das Ergebnis."""
+def main(arguments: list[str]) -> int:
+    """Prueft das Projekt und meldet das Ergebnis.
+
+    Args:
+        arguments: Befehlszeilenargumente; `--ci` gibt den Rueckgabewert von
+            mypy weiter, statt immer 0 zu liefern.
+    """
+    ci = "--ci" in arguments
     print(f"Projektordner: {PROJECT_ROOT}")
     print("")
 
@@ -62,7 +70,7 @@ def main() -> int:
     except FileNotFoundError:
         print("mypy ist nicht installiert.")
         print("Nachinstallieren mit: python -m pip install mypy")
-        return 0
+        return 1 if ci else 0
 
     if output:
         print(output)
@@ -74,8 +82,8 @@ def main() -> int:
         print("Die Typpruefung hat etwas gefunden (siehe oben).")
         print("Sie ist nicht blockierend -- das Projekt laeuft trotzdem.")
 
-    return 0
+    return code if ci else 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main(sys.argv[1:]))

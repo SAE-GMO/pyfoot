@@ -1,0 +1,77 @@
+# Automatische Pruefung bei jedem Push und jedem Pull Request.
+#
+# Job "pyfoot": Tests und Typpruefung der Bibliothek selbst.
+# Job "space":  Laeuft pyfoot-space noch mit diesem Stand von PyFoot?
+#               So faellt ein Bruch auf, bevor eine neue Version getaggt und
+#               in Space festgelegt wird.
+#
+# Gepruft wird unter Windows, weil die Schulrechner Windows haben; einmal mit
+# der aeltesten unterstuetzten und einmal mit einer aktuellen Python-Version.
+
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pyfoot:
+    name: PyFoot (Python ${{ matrix.python }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Pakete installieren
+        run: python -m pip install pygame pytest mypy
+
+      - name: Tests (pytest)
+        run: python -m pytest -q
+
+      - name: Typpruefung (mypy)
+        run: python tools/check_project.py --ci
+
+  space:
+    name: pyfoot-space mit diesem PyFoot
+    runs-on: windows-latest
+    steps:
+      # Beide Projekte nebeneinander, wie lokal unter SAE-GMO.
+      - uses: actions/checkout@v4
+        with:
+          path: pyfoot
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SAE-GMO/pyfoot-space
+          path: pyfoot-space
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Pakete installieren
+        run: python -m pip install pygame pytest mypy
+
+      - name: PyFoot aus dem Nachbarordner uebernehmen
+        working-directory: pyfoot-space
+        run: python tools/get_pyfoot.py --local
+
+      - name: Tests von pyfoot-space (pytest)
+        working-directory: pyfoot-space
+        run: python -m pytest -q
+
+      - name: Typpruefung von pyfoot-space (mypy)
+        working-directory: pyfoot-space
+        run: python tools/check_project.py --ci

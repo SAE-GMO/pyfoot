@@ -406,6 +406,14 @@ python -m pytest
 python tools\check_project.py
 ```
 
+**Auf GitHub** laeuft beides bei jedem Push und jedem Pull Request
+automatisch (`.github/workflows/tests.yml`), unter Windows mit Python 3.11 und
+3.13. Ein zweiter Job legt pyfoot-space daneben, uebernimmt diesen Stand von
+PyFoot mit `--local` und laesst dessen Tests laufen -- so faellt ein Bruch in
+Space auf, bevor eine neue Version getaggt wird. Mit `--ci` liefert
+`check_project.py` den Rueckgabewert von mypy, damit ein Typfehler den Lauf
+rot faerbt; lokal bleibt die Pruefung nicht blockierend.
+
 ## Namensgebung
 
 Alle Bezeichner -- Klassen, Methoden, Variablen, Module -- sind englisch.
